@@ -344,8 +344,8 @@
     <img
         src="ft-logo-s.png"
         alt="RSA Fortnite Tjommies"
-        width="40"
-        height="40"
+        width="50"
+        height="50"
         class="rounded-3 flex-shrink-0"
     >
 
@@ -364,20 +364,19 @@
         <section id="leaderboards" class="container-fluid px-0 mb-4">
           <article class="hero-card glass-card rounded-5 p-4 p-md-5 mb-4 overflow-hidden">
 
-    <!-- Top Row -->
-    <div class="d-flex justify-content-between align-items-start mb-4">
+   <div class="d-flex flex-column flex-sm-row justify-content-between align-items-sm-center gap-2 mb-4">
 
-        <div class="badge text-bg-dark rounded-pill px-3 py-2">
-            <i class="bi bi-controller me-2"></i>
-            Zero Build • Current Season
-        </div>
-
-        <div class="small text-white">
-            <i class="bi bi-clock-history me-1"></i>
-            <span id="updatedDate">Loading...</span>
-        </div>
-
+    <div class="badge text-bg-dark rounded-pill px-3 py-2 align-self-start">
+        <i class="bi bi-controller me-2"></i>
+        Zero Build • Current Season
     </div>
+
+    <div class="small text-dark text-sm-end">
+        <i class="bi bi-clock-history me-1"></i>
+        <span id="updatedDate">Loading...</span>
+    </div>
+
+</div>
 
     <!-- Main Hero -->
     <div class="row align-items-center g-4">
@@ -896,23 +895,37 @@
     }
 
     function renderCrownLeaderboard(players) {
-      const ranked = [...players].sort((a, b) => b.CrownWins - a.CrownWins);
+      const ranked = [...players]
+  .filter(player => Number(player.CrownWins) > 0)
+  .sort((a, b) => b.CrownWins - a.CrownWins);
 
-      document.getElementById("crownLeaderboard").innerHTML = ranked.map((player, index) => `
-        <div class="rank-row p-3 mb-2 d-flex align-items-center justify-content-between">
-          <div class="d-flex align-items-center gap-3">
-            <div class="fw-bold">#${index + 1}</div>
-            ${avatarHTML(player)}
-            <div>
-              <div class="fw-bold">${escapeHTML(player.Player)}</div>
-              <div class="small text-muted-ft">
-                ${index === 0 ? '<span class="badge-token m-0"><i class="bi bi-gem"></i> Crown Champion</span>' : 'Crown Wins'}
-              </div>
-            </div>
-          </div>
-          <div class="display-6 fw-bold">${player.CrownWins}</div>
+      const container = document.getElementById("crownLeaderboard");
+
+if (!ranked.length) {
+  container.innerHTML = `
+    <div class="text-center py-4 text-white">
+      <i class="bi bi-gem fs-1 d-block mb-2"></i>
+      No Crown Wins submitted yet.
+    </div>
+  `;
+  return;
+}
+
+container.innerHTML = ranked.map((player, index) => `
+  <div class="rank-row p-3 mb-2 d-flex align-items-center justify-content-between">
+    <div class="d-flex align-items-center gap-3">
+      <div class="fw-bold">#${index + 1}</div>
+      ${avatarHTML(player)}
+      <div>
+        <div class="fw-bold">${escapeHTML(player.Player)}</div>
+        <div class="small text-muted-ft">
+          ${index === 0 ? '<span class="badge-token m-0"><i class="bi bi-gem"></i> Crown Champion</span>' : 'Crown Wins'}
         </div>
-      `).join("");
+      </div>
+    </div>
+    <div class="display-6 fw-bold">${player.CrownWins}</div>
+  </div>
+`).join("");
     }
 
     function renderMilestones(players) {
@@ -955,27 +968,80 @@
     }
 
     function renderBadges(players) {
-      document.getElementById("badgesList").innerHTML = players.map(player => {
-        const badges = playerBadges(player);
 
-        return `
-          <div class="col-lg-6 col-xl-4">
-            <div class="leaderboard-note p-3 h-100">
-              <div class="d-flex align-items-center gap-3 mb-3">
-                ${avatarHTML(player)}
-                <div>
-                  <div class="fw-bold">${escapeHTML(player.Player)}</div>
-                  <div class="small text-muted-ft">${badges.length} badge${badges.length === 1 ? "" : "s"} earned</div>
-                </div>
-              </div>
-              <div class="d-flex flex-wrap">
-                ${badges.length ? badges.join("") : `<span class="small text-muted-ft">No badges earned yet.</span>`}
+  const ranked = players
+    .map(player => ({
+      player,
+      badges: playerBadges(player)
+    }))
+    .filter(item => item.badges.length > 0)
+    .sort((a, b) => b.badges.length - a.badges.length);
+
+  const initialCount = 6;
+  const container = document.getElementById("badgesList");
+
+  if (!ranked.length) {
+    container.innerHTML = `
+      <div class="col-12">
+        <div class="text-center py-4 text-muted">
+          <i class="bi bi-award fs-1 d-block mb-2"></i>
+          No badges have been earned yet.
+        </div>
+      </div>
+    `;
+    return;
+  }
+
+  function renderCards(showAll = false) {
+
+    const visible = showAll
+      ? ranked
+      : ranked.slice(0, initialCount);
+
+    container.innerHTML = visible.map(({ player, badges }) => `
+      <div class="col-12 col-lg-6">
+        <div class="leaderboard-note p-3 h-100">
+
+          <div class="d-flex align-items-center gap-3 mb-3">
+            ${avatarHTML(player)}
+
+            <div>
+              <div class="fw-bold">${escapeHTML(player.Player)}</div>
+              <div class="small text-muted-ft">
+                ${badges.length} badge${badges.length === 1 ? "" : "s"} earned
               </div>
             </div>
           </div>
-        `;
-      }).join("");
+
+          <div class="d-flex flex-wrap">
+            ${badges.join("")}
+          </div>
+
+        </div>
+      </div>
+    `).join("");
+
+    if (!showAll && ranked.length > initialCount) {
+
+      container.innerHTML += `
+        <div class="col-12 text-center mt-3">
+          <button
+            id="showMoreBadges"
+            class="btn btn-outline-light rounded-pill px-4">
+            <i class="bi bi-chevron-down me-2"></i>
+            Show More Players
+          </button>
+        </div>
+      `;
+
+      document
+        .getElementById("showMoreBadges")
+        .addEventListener("click", () => renderCards(true));
     }
+  }
+
+  renderCards();
+}
 
     function countdown(dateValue) {
       const target = new Date(String(dateValue).replace(" ", "T"));
