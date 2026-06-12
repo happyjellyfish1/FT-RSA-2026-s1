@@ -1,145 +1,636 @@
 <!doctype html>
 <html lang="en">
+
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>RSA Fortnite Tjommies Dashboard</title>
 
-  <!--preview-->
-  <meta property="og:title" content="Fortnite Tjommies Live Leaderboard">
-<meta property="og:description" content="Current Zero Build season rankings.">
-<meta property="og:type" content="website">
-<meta property="og:image" content="https://happyjellyfish1.github.io/FT-RSA-2026-s1/fortnite-tjommies-leaderboard-stats.png">
-<meta property="og:url" content="https://happyjellyfish1.github.io/FT-RSA-2026-s1/">
-
-  <!-- Discourage indexing / crawling -->
-  <meta name="robots" content="noindex,nofollow,noarchive,nosnippet,noimageindex">
-  <meta name="googlebot" content="noindex,nofollow,noarchive,nosnippet,noimageindex">
-  <meta name="bingbot" content="noindex,nofollow,noarchive,nosnippet,noimageindex">
-  <meta name="slurp" content="noindex,nofollow,noarchive,nosnippet">
-  <meta name="duckduckbot" content="noindex,nofollow,noarchive,nosnippet">
-  <meta name="baiduspider" content="noindex,nofollow,noarchive,nosnippet">
-  <meta name="yandex" content="noindex,nofollow,noarchive,nosnippet">
-
-  <!-- Discourage AI crawlers where respected -->
-  <meta name="GPTBot" content="noindex,nofollow">
-  <meta name="ChatGPT-User" content="noindex,nofollow">
-  <meta name="CCBot" content="noindex,nofollow">
-  <meta name="anthropic-ai" content="noindex,nofollow">
-  <meta name="ClaudeBot" content="noindex,nofollow">
-  <meta name="PerplexityBot" content="noindex,nofollow">
-
-  <title>Fortnite Tjommies Live Leaderboard</title>
-
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
 
   <style>
-    body {
-      background:
-        radial-gradient(circle at top left, rgba(124, 58, 237, .35), transparent 30%),
-        radial-gradient(circle at bottom right, rgba(34, 197, 94, .25), transparent 30%),
-        #0f172a;
+    :root {
+      --p: #8b5cf6;
+      --p2: #a855f7;
+      --p3: #c084fc;
+      --bg: #0f172a;
+      --panel: #111827;
+      --soft: #cbd5e1;
+      --muted: #94a3b8;
+      --border: rgba(255, 255, 255, .1);
     }
 
-    .stat-card {
-      background: rgba(255, 255, 255, .08);
-      backdrop-filter: blur(14px);
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      min-height: 100vh;
+      color: #fff;
+      background:
+        radial-gradient(circle at top left, rgba(139, 92, 246, .35), transparent 28%),
+        radial-gradient(circle at bottom right, rgba(168, 85, 247, .2), transparent 32%),
+        linear-gradient(180deg, #0f172a, #111827);
+    }
+
+    section[id] {
+      scroll-margin-top: 24px;
+    }
+
+    .sidebar {
+      position: sticky;
+      top: 0;
+      min-height: 100vh;
+      background: linear-gradient(180deg, rgba(17, 24, 39, .98), rgba(15, 23, 42, .96));
+      border-right: 1px solid var(--border);
+    }
+
+    .brand-mark {
+      width: 44px;
+      height: 44px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 16px;
+      background: linear-gradient(135deg, var(--p), var(--p2));
+      box-shadow: 0 0 28px rgba(139, 92, 246, .35);
+    }
+
+    .nav-dashboard .nav-link {
+      color: var(--soft);
+      position: relative;
+      border-radius: 18px;
+      padding: .85rem 1rem;
+      font-weight: 700;
+      transition: .2s ease;
+    }
+
+    .nav-dashboard .nav-link i {
+      color: var(--p3);
+    }
+
+    .nav-dashboard .nav-link:hover,
+    .nav-dashboard .nav-link.active {
+      color: #fff;
+      background: rgba(139, 92, 246, .12);
+    }
+
+    .nav-dashboard .nav-link.active::after {
+      content: "";
+      position: absolute;
+      left: 1rem;
+      right: 1rem;
+      bottom: .28rem;
+      height: 3px;
+      border-radius: 999px;
+      background: var(--p);
+      box-shadow: 0 0 14px rgba(139, 92, 246, .8);
+    }
+
+    .glass-card {
+      background: rgba(255, 255, 255, .065);
+      border: 1px solid var(--border);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      box-shadow: 0 20px 50px rgba(0, 0, 0, .28);
+    }
+
+    .hero-card {
+      background:
+        radial-gradient(circle at 15% 15%, rgba(192, 132, 252, .34), transparent 32%),
+        linear-gradient(135deg, rgba(139, 92, 246, .34), rgba(17, 24, 39, .72));
+      border: 1px solid rgba(192, 132, 252, .18);
+    }
+
+    .section-icon {
+      color: var(--p3);
+    }
+
+    .text-soft {
+      color: var(--soft);
+    }
+
+    .text-muted-ft {
+      color: var(--muted);
+    }
+
+    .letter-space {
+      letter-spacing: .12em;
     }
 
     .rank-row {
-      background: rgba(255, 255, 255, .10);
+      background: rgba(255, 255, 255, .07);
+      border: 1px solid rgba(255, 255, 255, .075);
+      border-radius: 18px;
     }
+
+    .rank-key-card {
+      background: rgba(139, 92, 246, .10);
+      border: 1px solid rgba(192, 132, 252, .18);
+    }
+
+    .rank-weight-pill,
+    .badge-token {
+      display: inline-flex;
+      align-items: center;
+      gap: .45rem;
+      color: #fff;
+      border: 1px solid rgba(192, 132, 252, .22);
+      background: rgba(139, 92, 246, .16);
+      border-radius: 999px;
+      padding: .45rem .7rem;
+      margin: .2rem;
+      font-size: .82rem;
+      font-weight: 700;
+    }
+
+    .crown-prestige {
+      background:
+        radial-gradient(circle at top right, rgba(192, 132, 252, .38), transparent 30%),
+        linear-gradient(135deg, rgba(139, 92, 246, .30), rgba(17, 24, 39, .70));
+      border: 1px solid rgba(192, 132, 252, .25);
+    }
+
+    .crown-icon-burst {
+      width: 46px;
+      height: 46px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 18px;
+      background: linear-gradient(135deg, var(--p), var(--p2));
+      box-shadow: 0 0 28px rgba(139, 92, 246, .55);
+    }
+
+    .leaderboard-note {
+      background: rgba(15, 23, 42, .48);
+      border: 1px solid rgba(255, 255, 255, .10);
+      border-radius: 22px;
+    }
+
+    .avatar-circle {
+      width: 42px;
+      height: 42px;
+      border-radius: 50%;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      flex: 0 0 42px;
+      background: linear-gradient(135deg, var(--p), var(--p2));
+      color: #fff;
+      font-weight: 900;
+      box-shadow: 0 0 18px rgba(139, 92, 246, .35);
+      overflow: hidden;
+    }
+
+    .avatar-circle img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .progress {
+      height: .7rem;
+      background: rgba(255, 255, 255, .12);
+    }
+
+    .progress-bar {
+      background: linear-gradient(90deg, var(--p), var(--p2));
+    }
+
+    .mobile-bottom-nav {
+      background: rgba(17, 24, 39, .98);
+      border-top: 1px solid var(--border);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      z-index: 1050;
+    }
+
+    .mobile-bottom-nav a {
+      color: var(--soft);
+      text-decoration: none;
+      position: relative;
+      min-width: 54px;
+      padding: .80rem .80rem;
+      font-weight: 700;
+      font-size: 1rem;
+    }
+
+    .mobile-bottom-nav a i {
+      display: block;
+      color: var(--p3);
+      font-size: 1.15rem;
+      line-height: 1.15;
+    }
+
+    .mobile-bottom-nav a.active {
+      color: #fff;
+    }
+
+    .mobile-bottom-nav a.active::before {
+      content: "";
+      position: absolute;
+      left: 18%;
+      right: 18%;
+      top: 0;
+      height: 3px;
+      border-radius: 999px;
+      background: var(--p);
+      box-shadow: 0 0 14px rgba(139, 92, 246, .85);
+    }
+
+    @media (max-width: 991.98px) {
+      .sidebar-wrap {
+        display: none;
+      }
+
+      .page-shell {
+        padding-left: 1rem !important;
+        padding-right: 1rem !important;
+        padding-bottom: 180px;
+      }
+    }
+
+    @media (min-width: 992px) {
+      .mobile-bottom-nav {
+        display: none !important;
+      }
+    }
+    @media (max-width: 991.98px) {
+  body {
+    padding-bottom: 50px;
+  }
+
+  .page-shell {
+    padding-bottom: 0 !important;
+  }
+
+  footer {
+    margin-bottom: 50px;
+  }
+}
+.mobile-header{
+    position:sticky;
+    top:0;
+    z-index:1040;
+
+    display:flex;
+    align-items:center;
+    gap:12px;
+
+    padding:12px 16px;
+
+    background:rgba(17,24,39,.95);
+    backdrop-filter:blur(16px);
+    -webkit-backdrop-filter:blur(16px);
+
+    border-bottom:1px solid rgba(255,255,255,.08);
+}
+
+@media(min-width:992px){
+    .mobile-header{
+        display:none;
+    }
+}
   </style>
 </head>
 
-<body class="min-vh-100 text-white">
+<body>
+  <div class="container-fluid">
+    <div class="row">
+      <aside class="sidebar-wrap col-lg-3 col-xl-2 p-0">
+        <div class="sidebar p-4">
+        <div class="text-start mb-5">
 
-  <main class="container py-4 py-lg-5">
+    <img
+        src="ft-logo-m.png"
+        alt="RSA Fortnite Tjommies"
+        class="img-fluid mb-3"
+        style="max-width: 140px;"
+    >
 
-    <section class="text-center mb-4">
-      <div class="d-inline-flex align-items-center gap-2 px-3 py-2 rounded-pill bg-white bg-opacity-10 border border-white border-opacity-25 small mb-3">
-        🎮 Zero Build • Current Season
-      </div>
+    <div class="small text-muted-ft">
+        The
+    </div>
 
-      <h1 class="display-5 fw-bold mb-2">Fortnite Tjommies Active Leaderboard</h1>
-      <p class="text-white-50 mb-0">Think you got what it takes to be #1?</p>
-    </section>
+    <div class="fw-bold text-uppercase letter-space fs-5">
+        RSA Fortnite Tjommies
+    </div>
 
-    <section class="row g-3 g-lg-4" id="leaderboard">
-      <div class="col-12">
-        <div class="text-center text-white-50 py-5">Loading leaderboard...</div>
-      </div>
-    </section>
+    <div class="small text-muted-ft">
+        Community Hub
+    </div>
 
-    <section class="mt-4">
-      <div class="row g-3">
-        <div class="col-lg-8">
-          <div class="rounded-4 border border-white border-opacity-10 bg-white bg-opacity-10 p-3 p-md-4">
-            <h2 class="h5 fw-bold mb-2">📸 How to claim your spot</h2>
-            <p class="mb-2 text-white-50">
-              Send a screenshot/photo of your Fortnite stats page as proof to your Admin.
+</div>
+
+         <!-- <div class="glass-card rounded-4 p-3 mb-4">
+            <div class="small text-muted-ft text-uppercase letter-space fw-bold">Current Season</div>
+            <div class="fw-bold">Zero Build Rankings</div>
+          </div>-->
+
+          <nav id="pageNav" class="nav nav-dashboard flex-column gap-2">
+            <a class="nav-link active" href="#leaderboards"><i class="bi bi-trophy-fill me-2"></i>Leaderboards</a>
+            <a class="nav-link" href="#crowns"><i class="bi bi-gem me-2"></i>Crowns</a>
+            <a class="nav-link" href="#events"><i class="bi bi-calendar-event-fill me-2"></i>Events</a>
+            <a class="nav-link" href="#milestones"><i class="bi bi-stars me-2"></i>Milestones</a>
+            <a class="nav-link" href="#badges"><i class="bi bi-patch-check-fill me-2"></i>Badges</a>
+            <a class="nav-link" href="#join"><i class="bi bi-people-fill me-2"></i>Join</a>
+          </nav>
+        </div>
+      </aside>
+<div class="mobile-header d-lg-none">
+
+    <img
+        src="ft-logo-s.png"
+        alt="RSA Fortnite Tjommies"
+        width="50"
+        height="50"
+        class="rounded-3 flex-shrink-0"
+    >
+
+    <div class="lh-sm">
+        <div class="small text-muted-ft">The</div>
+        <div class="fw-bold text-uppercase letter-space">
+            RSA Fortnite Tjommies
+        </div>
+        <div class="small text-muted-ft">
+            Community Hub
+        </div>
+    </div>
+
+</div>
+      <main class="col-12 col-lg-9 col-xl-10 page-shell p-3 p-lg-4">
+        <section id="leaderboards" class="container-fluid px-0 mb-4">
+          <article class="hero-card glass-card rounded-5 p-4 p-md-5 mb-4 overflow-hidden">
+
+   <div class="d-flex flex-column flex-sm-row justify-content-between align-items-sm-center gap-2 mb-4">
+
+    <div class="badge text-bg-dark rounded-pill px-3 py-2 align-self-start">
+        <i class="bi bi-controller me-2"></i>
+        Zero Build • Current Season
+    </div>
+
+    <div class="small text-white text-sm-end">
+        <i class="bi bi-clock-history me-1"></i>
+        <span id="updatedDate">Loading...</span>
+    </div>
+
+</div>
+
+    <!-- Main Hero -->
+    <div class="row align-items-center g-4">
+
+        <div class="col-lg-10">
+
+            <div class="text-uppercase fw-bold small text-dark mb-2">
+                South African Fortnite Community
+            </div>
+
+            <h1 class="display-2 fw-bold lh-1 mb-3">
+                Fortnite<br>
+                <span class="fw-bold" style="color:#f9b233;">Tjommies</span>
+            </h1>
+
+            <p class="lead mb-4">
+                A place for South African players to squad up, chase Victory Royales,
+                celebrate clutch moments and enjoy great laughs with good tjommies.
             </p>
-            <div class="small">
-              Fortnite ➜ <strong>Career</strong> ➜ <strong>Stats</strong> ➜ Filters:
-              <span class="badge text-bg-light p-2 border border-primary border-3 ms-1">Zero Build</span>
-              <span class="badge text-bg-light p-2 border border-primary border-3 ms-1">Current Season</span>
+
+            <div class="d-flex flex-wrap gap-3">
+
+                <div class="d-flex align-items-center gap-2">
+                    <i class="bi bi-trophy-fill fs-5"></i>
+                    <span>Leaderboards</span>
+                </div>
+
+                <div class="d-flex align-items-center gap-2">
+                    <i class="bi bi-award-fill fs-5"></i>
+                    <span>Community Badges</span>
+                </div>
+
+                <div class="d-flex align-items-center gap-2">
+                    <i class="bi bi-calendar-event fs-5"></i>
+                    <span>Events</span>
+                </div>
+
+            </div>
+
+        </div>
+
+        <!-- Right Feature Card -->
+        <!--<div class="col-lg-4">
+
+            <div class=" rounded-4 p-4 text-center h-100">
+
+                <i class="bi bi-stars display-5 mb-3"></i>
+
+                <div class="text-uppercase small fw-bold text-secondary mb-2">
+                    Community Motto
+                </div>
+
+                <div class="fw-semibold fs-5">
+                    Good Games.<br>
+                    Great Laughs.
+                </div>
+
+                <hr>
+
+                <div class="small text-secondary">
+                    Built for South African Fortnite players who enjoy winning together and having fun doing it.
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>-->
+
+</article>
+
+          <div class="row g-3 g-lg-4 mb-4" id="topCards">
+            <div class="col-12">
+              <div class="text-center text-soft py-4">Loading leaderboard...</div>
             </div>
           </div>
-        </div>
 
-        <div class="col-lg-4">
-          <div class="rounded-4 border border-white border-opacity-10 bg-white bg-opacity-10 p-3 p-md-4 h-100">
-            <h2 class="h5 fw-bold mb-2">🔥 Keep it fresh</h2>
-            <p class="text-white-50 mb-0">
-              Send updated screenshots anytime. Weekly or monthly updates are perfect.
-            </p>
-          </div>
-        </div>
-      </div>
-    </section>
+          <article class="glass-card rounded-5 p-3 p-md-4">
+            <div class="d-flex align-items-center justify-content-between gap-3 flex-wrap mb-3">
+              <div>
+                <div class="small text-soft text-uppercase letter-space fw-bold mb-1">Master Rank</div>
+                <h2 class="h3 fw-bold mb-0">Overall Champion Leaderboard</h2>
+              </div>
+              <button class="btn btn-outline-light rounded-pill px-3" type="button" data-bs-toggle="collapse" data-bs-target="#masterRankKey">
+                <i class="bi bi-info-circle-fill me-1"></i> Ranking Key
+              </button>
+            </div>
 
-    <footer class="text-center text-white-50 small mt-4">
-      Updated by admins only • Last refreshed: <span id="updatedDate">Loading...</span>
-    </footer>
+            <div class="collapse mb-3" id="masterRankKey">
+              <div class="rank-key-card rounded-4 p-3">
+                <div class="fw-bold mb-2"><i class="bi bi-info-circle-fill section-icon me-2"></i>How the Master Rank Works</div>
+                <p class="small text-soft mb-2">Players earn an Overall Champion ranking based on their position across all leaderboards, with wins and crown wins carrying the most weight.</p>
+                <div class="d-flex flex-wrap">
+                  <span class="rank-weight-pill"><i class="bi bi-trophy-fill section-icon"></i>Wins 35%</span>
+                  <span class="rank-weight-pill"><i class="bi bi-gem section-icon"></i>Crown Wins 35%</span>
+                  <span class="rank-weight-pill"><i class="bi bi-crosshair section-icon"></i>Avg Elims 20%</span>
+                  <span class="rank-weight-pill"><i class="bi bi-bullseye section-icon"></i>Top 10% 10%</span>
+                </div>
+                <div class="small text-soft mt-2">Top 25% is still used for badges and milestones, but it does not affect the Master Rank.</div>
+              </div>
+            </div>
 
-  </main>
+            <div id="mainLeaderboard"></div>
+          </article>
+        </section>
+
+        <section id="crowns" class="container-fluid px-0 mb-4">
+          <article class="glass-card crown-prestige rounded-5 p-3 p-md-4">
+            <div class="d-flex align-items-center justify-content-between gap-3 flex-wrap mb-3">
+              <div>
+                <div class="small text-soft text-uppercase letter-space fw-bold mb-1">Prestige Board</div>
+                <h2 class="h3 fw-bold mb-0"><span class="crown-icon-burst me-2"><i class="bi bi-gem fs-4"></i></span>Crown Wins</h2>
+              </div>
+              <span class="badge rounded-pill text-bg-light px-3 py-2">35% Master Rank Weight</span>
+            </div>
+
+            <div class="row g-3 align-items-stretch">
+              <div class="col-lg-8">
+                <div id="crownLeaderboard"></div>
+              </div>
+              <div class="col-lg-4">
+                <div class="leaderboard-note p-3 h-100">
+                  <h3 class="h6 fw-bold mb-2"><i class="bi bi-patch-check-fill section-icon me-2"></i>Crown Badge Path</h3>
+                  <div class="d-flex flex-wrap gap-2 mb-2">
+                    <span class="badge-token"><i class="bi bi-gem"></i> Crown Collector 10+</span>
+                    <span class="badge-token"><i class="bi bi-gem"></i> Crown Hunter 30+</span>
+                    <span class="badge-token"><i class="bi bi-gem"></i> Crown Master 50+</span>
+                  </div>
+                  <p class="small text-soft mb-0">Crown wins are treated as prestige wins. They get their own board and carry strong weight in the Overall Champion ranking.</p>
+                </div>
+              </div>
+            </div>
+          </article>
+        </section>
+
+        <section id="events" class="container-fluid px-0 mb-4">
+          <article class="glass-card rounded-5 p-3 p-md-4">
+            <div class="d-flex align-items-center justify-content-between gap-3 mb-3">
+              <div>
+                <div class="small text-soft text-uppercase letter-space fw-bold mb-1">What's On</div>
+                <h2 class="h3 fw-bold mb-0">Active Events</h2>
+              </div>
+              <span class="fs-3"><i class="bi bi-calendar-event-fill section-icon"></i></span>
+            </div>
+            <div class="row g-3" id="eventsList"></div>
+          </article>
+        </section>
+
+        <section id="milestones" class="container-fluid px-0 mb-4">
+          <article class="glass-card rounded-5 p-3 p-md-4">
+            <div class="d-flex align-items-center justify-content-between gap-3 flex-wrap mb-3">
+              <div>
+                <div class="small text-soft text-uppercase letter-space fw-bold mb-1">Group Progress</div>
+                <h2 class="h3 fw-bold mb-0">Community Milestones</h2>
+              </div>
+             <!-- <span class="badge rounded-pill text-bg-light px-3 py-2">Auto-calculated</span>-->
+            </div>
+            <div class="row g-3" id="milestonesList"></div>
+          </article>
+        </section>
+
+        <section id="badges" class="container-fluid px-0 mb-4">
+          <article class="glass-card rounded-5 p-3 p-md-4">
+            <div class="d-flex align-items-center justify-content-between gap-3 flex-wrap mb-3">
+              <div>
+                <div class="small text-soft text-uppercase letter-space fw-bold mb-1">Player Progress</div>
+                <h2 class="h3 fw-bold mb-0">Badge Collection</h2>
+              </div>
+              <button class="btn btn-outline-light rounded-pill px-3" type="button" data-bs-toggle="collapse" data-bs-target="#badgeKey">
+                <i class="bi bi-key-fill me-1"></i> Badge Key
+              </button>
+            </div>
+
+            <div class="collapse mb-3" id="badgeKey">
+              <div class="leaderboard-note p-3">
+                <div class="table-responsive">
+                  <table class="table table-dark table-striped align-middle mb-0">
+                    <thead>
+                      <tr><th>Path</th><th>Tier 1</th><th>Tier 2</th><th>Tier 3</th></tr>
+                    </thead>
+                    <tbody>
+                      <tr><td>Wins</td><td>Victory Veteran 10+</td><td>Victory Hero 25+</td><td>Victory Champion 50+</td></tr>
+                      <tr><td>Crowns</td><td>Crown Collector 10+</td><td>Crown Hunter 30+</td><td>Crown Master 50+</td></tr>
+                      <tr><td>Eliminations</td><td>Elimination King 100+</td><td>Elimination Warlord 250+</td><td>Elimination Legend 500+</td></tr>
+                      <tr><td>Top 10%</td><td>Top 10 Machine 25+</td><td>Top 10 Specialist 50+</td><td>Top 10 Legend 100+</td></tr>
+                      <tr><td>Top 25%</td><td>Consistency Scout 50+</td><td>Consistency Expert 100+</td><td>Consistency Master 250+</td></tr>
+                      <tr><td>Matches</td><td>Grinder 50+</td><td>Dedicated Grinder 150+</td><td>Ultimate Grinder 300+</td></tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+
+            <div class="row g-3" id="badgesList"></div>
+          </article>
+        </section>
+
+        <section id="join" class="container-fluid px-0 mb-4">
+          <article class="hero-card glass-card rounded-5 p-4 p-md-5 text-center">
+            <i class="bi bi-people-fill display-4 section-icon"></i>
+            <h2 class="display-6 fw-bold mt-3">Join The Tjommies</h2>
+            <p class="lead text-soft mb-0">Whether you're chasing wins or just enjoying the chaos, submit your stats and help the RSA Fortnite Tjommies climb together.</p>
+          </article>
+        </section>
+
+        <footer class="text-center text-muted-ft small py-4">
+          Updated by admins only • Last refreshed: <span id="footerUpdatedDate">Loading...</span><br/><br/>
+          <small>Built by a Tjommie, for the Tjommies.<br/> This is an unofficial fan-made community project created for fun, friendship and friendly competition.<br/> Not affiliated with or endorsed by Epic Games or Fortnite.<br/> All trademarks belong to their respective owners.</small>
+        </footer>
+      </main>
+    </div>
+  </div>
+
+  <nav id="mobilePageNav" class="mobile-bottom-nav fixed-bottom d-flex justify-content-around text-center">
+    <a class="active" href="#leaderboards"><i class="bi bi-trophy-fill"></i>Rank</a>
+    <a href="#crowns"><i class="bi bi-gem"></i>Crowns</a>
+    <a href="#events"><i class="bi bi-calendar-event-fill"></i>Events</a>
+    <a href="#milestones"><i class="bi bi-stars"></i>Goals</a>
+    <a href="#badges"><i class="bi bi-patch-check-fill"></i>Badges</a>
+    <a href="#join"><i class="bi bi-people-fill"></i>Join</a>
+  </nav>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js"></script>
 
   <script>
-    const SHEET_CSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vRkarLnPbKyhRAlju86OsPWVjl3J05P8egtL9Y6KpC76EPRivarOobxPxpk-E-lGvz0pL2c2cGSY7KJ/pub?gid=458262221&single=true&output=csv";
+    const DEV_MODE = false;
+    const PLAYERS_CSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vRH_ns4kWi8O_M-afqlNlxUOOA_yZMm04LlQZYVKLIewx7oV-ROKD0Sa0OSXtywOncScNlWUO9QIRml/pub?gid=622282576&single=true&output=csv";
+    const EVENTS_CSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vRH_ns4kWi8O_M-afqlNlxUOOA_yZMm04LlQZYVKLIewx7oV-ROKD0Sa0OSXtywOncScNlWUO9QIRml/pub?gid=145552210&single=true&output=csv";
 
-    const medals = ["🥇", "🥈", "🥉"];
+    const samplePlayers = [
+      { Player: "Jacqui", Wins: 32, AvgElims: 6.4, MatchesPlayed: 160, Top10Percent: 72, Top25Percent: 118, Eliminations: 640, CrownWins: 18, Avatar: "", Active: "TRUE" },
+      { Player: "Mason", Wins: 27, AvgElims: 7.2, MatchesPlayed: 145, Top10Percent: 64, Top25Percent: 104, Eliminations: 720, CrownWins: 12, Avatar: "", Active: "TRUE" },
+      { Player: "Luke", Wins: 21, AvgElims: 5.9, MatchesPlayed: 188, Top10Percent: 80, Top25Percent: 130, Eliminations: 590, CrownWins: 22, Avatar: "", Active: "TRUE" },
+      { Player: "Mia", Wins: 15, AvgElims: 4.8, MatchesPlayed: 122, Top10Percent: 46, Top25Percent: 92, Eliminations: 380, CrownWins: 6, Avatar: "", Active: "TRUE" }
+    ];
 
-    const categories = [
-      {
-        title: "Most Wins",
-        icon: "👑",
-        valueLabel: "Wins",
-        field: "Wins",
-        gradient: "linear-gradient(135deg, #7c3aed, #a855f7)"
-      },
-      {
-        title: "Average Eliminations",
-        icon: "💀",
-        valueLabel: "Avg Elims",
-        field: "Avg Elims",
-        gradient: "linear-gradient(135deg, #06b6d4, #38bdf8)"
-      },
-      {
-        title: "Total Matches Played",
-        icon: "🎮",
-        valueLabel: "Matches",
-        field: "Matches Played",
-        gradient: "linear-gradient(135deg, #22c55e, #84cc16)"
-      }
+    const sampleEvents = [
+      { Title: "Crown Rush Night", Description: "Most Crown Wins for the evening.", EventDateTime: "2026-07-01 19:00", Status: "UPCOMING", Icon: "bi-gem", SortOrder: 1 },
+      { Title: "Zero Build Squad Run", Description: "Play with as many tjommies as possible.", EventDateTime: "2026-07-05 20:00", Status: "UPCOMING", Icon: "bi-controller", SortOrder: 2 }
     ];
 
     function escapeHTML(value) {
-      return String(value).replace(/[&<>"']/g, char => ({
+      return String(value ?? "").replace(/[&<>"']/g, char => ({
         "&": "&amp;",
         "<": "&lt;",
         ">": "&gt;",
         '"': "&quot;",
         "'": "&#039;"
       }[char]));
+    }
+
+    function toNumber(value) {
+      const number = Number(String(value ?? "").replace("%", "").trim());
+      return Number.isFinite(number) ? number : 0;
     }
 
     function parseCSV(text) {
@@ -150,9 +641,9 @@
 
       for (let i = 0; i < text.length; i++) {
         const char = text[i];
-        const nextChar = text[i + 1];
+        const next = text[i + 1];
 
-        if (char === '"' && inQuotes && nextChar === '"') {
+        if (char === '"' && inQuotes && next === '"') {
           cell += '"';
           i++;
         } else if (char === '"') {
@@ -167,7 +658,7 @@
             row = [];
             cell = "";
           }
-          if (char === "\r" && nextChar === "\n") i++;
+          if (char === "\r" && next === "\n") i++;
         } else {
           cell += char;
         }
@@ -178,154 +669,491 @@
         rows.push(row);
       }
 
-      const headers = rows.shift().map(header => header.trim());
-
-      return rows.map(row =>
-        Object.fromEntries(headers.map((header, index) => [
-          header,
-          (row[index] || "").trim()
-        ]))
-      );
+      const headers = rows.shift()?.map(header => header.trim()) || [];
+      return rows.map(row => Object.fromEntries(headers.map((header, index) => [header, (row[index] || "").trim()])));
     }
 
-    function renderEmptyCard(card) {
-      return `
-        <div class="rank-row rounded-4 p-3 text-white-50">
-          No verified stats yet.
+    function normalizePlayers(data) {
+      return data
+        .filter(player => String(player.Active ?? "TRUE").toUpperCase() !== "FALSE")
+        .filter(player => String(player.Player ?? "").trim() !== "")
+        .map(player => ({
+          Player: String(player.Player || "").trim(),
+          Wins: toNumber(player.Wins),
+          AvgElims: toNumber(player.AvgElims),
+          MatchesPlayed: toNumber(player.MatchesPlayed),
+          Top10Percent: toNumber(player.Top10Percent),
+          Top25Percent: toNumber(player.Top25Percent),
+          Eliminations: toNumber(player.Eliminations),
+          CrownWins: toNumber(player.CrownWins),
+          Avatar: String(player.Avatar || "").trim(),
+          Active: String(player.Active || "TRUE").trim(),
+          LastUpdated: String(player.LastUpdated || "").trim()
+        }));
+    }
+
+    function avatarHTML(player) {
+      const initial = escapeHTML((player.Player || "?").charAt(0).toUpperCase());
+
+      if (player.Avatar) {
+        return `<span class="avatar-circle"><img src="${escapeHTML(player.Avatar)}" alt="${escapeHTML(player.Player)} avatar" onerror="this.parentElement.textContent='${initial}'"></span>`;
+      }
+
+      return `<span class="avatar-circle">${initial}</span>`;
+    }
+
+    function rankPlayers(players, field) {
+      const sorted = [...players].sort((a, b) => b[field] - a[field]);
+      const map = new Map();
+      let previousValue = null;
+      let previousRank = 0;
+
+      sorted.forEach((player, index) => {
+        const value = player[field];
+        const rank = value === previousValue ? previousRank : index + 1;
+        map.set(player.Player, rank);
+        previousValue = value;
+        previousRank = rank;
+      });
+
+      return map;
+    }
+
+    function enrichPlayers(players) {
+      const winsRank = rankPlayers(players, "Wins");
+      const crownRank = rankPlayers(players, "CrownWins");
+      const avgRank = rankPlayers(players, "AvgElims");
+      const top10Rank = rankPlayers(players, "Top10Percent");
+      const top25Rank = rankPlayers(players, "Top25Percent");
+
+      return players.map(player => {
+        const ranks = {
+          wins: winsRank.get(player.Player) || players.length,
+          crowns: crownRank.get(player.Player) || players.length,
+          avg: avgRank.get(player.Player) || players.length,
+          top10: top10Rank.get(player.Player) || players.length,
+          top25: top25Rank.get(player.Player) || players.length
+        };
+
+        const masterScore =
+          (ranks.wins * 35) +
+          (ranks.crowns * 35) +
+          (ranks.avg * 20) +
+          (ranks.top10 * 10);
+
+        return { ...player, ranks, masterScore };
+      });
+    }
+
+    function badgeTier(value, tiers, icon) {
+      const earned = tiers.filter(tier => value >= tier.amount).pop();
+      return earned ? `<span class="badge-token"><i class="bi ${icon}"></i> ${earned.name}</span>` : "";
+    }
+
+    function playerBadges(player) {
+      return [
+        badgeTier(player.Wins, [{ amount: 10, name: "Victory Veteran" }, { amount: 25, name: "Victory Hero" }, { amount: 50, name: "Victory Champion" }], "bi-trophy-fill"),
+        badgeTier(player.CrownWins, [{ amount: 10, name: "Crown Collector" }, { amount: 30, name: "Crown Hunter" }, { amount: 50, name: "Crown Master" }], "bi-gem"),
+        badgeTier(player.Eliminations, [{ amount: 100, name: "Elimination King" }, { amount: 250, name: "Elimination Warlord" }, { amount: 500, name: "Elimination Legend" }], "bi-crosshair"),
+        badgeTier(player.Top10Percent, [{ amount: 25, name: "Top 10 Machine" }, { amount: 50, name: "Top 10 Specialist" }, { amount: 100, name: "Top 10 Legend" }], "bi-bullseye"),
+        badgeTier(player.Top25Percent, [{ amount: 50, name: "Consistency Scout" }, { amount: 100, name: "Consistency Expert" }, { amount: 250, name: "Consistency Master" }], "bi-stars"),
+        badgeTier(player.MatchesPlayed, [{ amount: 50, name: "Grinder" }, { amount: 150, name: "Dedicated Grinder" }, { amount: 300, name: "Ultimate Grinder" }], "bi-controller")
+      ].filter(Boolean);
+    }
+
+    function renderTopCards(players) {
+      const cards = [
+        { title: "Most Wins", icon: "bi-trophy-fill", field: "Wins", label: "Wins", collapseId: "fullWinsLeaderboard" },
+        { title: "Total Eliminations", icon: "bi-crosshair", field: "Eliminations", label: "Eliminations", collapseId: "fullEliminationsLeaderboard"},
+        { title: "Matches Played", icon: "bi-controller", field: "MatchesPlayed", label: "Matches", collapseId: "fullMatchesLeaderboard" }
+      ];
+
+      document.getElementById("topCards").innerHTML = cards.map(card => {
+        const ranked = [...players].sort((a, b) => b[card.field] - a[card.field]);
+        const top = ranked.slice(0, 3);
+        const rest = ranked.slice(3);
+
+        return `
+          <div class="col-12 col-xl-4">
+            <article class="glass-card rounded-5 p-3 h-100">
+              <div class="d-flex justify-content-between align-items-center mb-3">
+                <div>
+                  <div class="small text-muted-ft text-uppercase letter-space fw-bold">Top 3</div>
+                  <h2 class="h5 fw-bold mb-0">${card.title}</h2>
+                </div>
+                <i class="bi ${card.icon} section-icon fs-2"></i>
+              </div>
+
+              ${top.map((player, index) => `
+                <div class="rank-row p-3 mb-2 d-flex align-items-center justify-content-between">
+                  <div class="d-flex align-items-center gap-3">
+                    <div class="fw-bold">#${index + 1}</div>
+                    ${avatarHTML(player)}
+                    <div>
+                      <div class="fw-bold">${escapeHTML(player.Player)}</div>
+                      <div class="small text-muted-ft">${card.label}</div>
+                    </div>
+                  </div>
+                  <div class="h5 mb-0 fw-bold">${escapeHTML(player[card.field])}</div>
+                </div>
+              `).join("")}
+
+              ${rest.length ? `
+                <button class="btn btn-outline-light btn-sm rounded-pill mt-2" type="button" data-bs-toggle="collapse" data-bs-target="#${card.collapseId}">
+                  View Full Leaderboard
+                </button>
+
+                <div class="collapse mt-3" id="${card.collapseId}">
+                  ${rest.map((player, index) => `
+                    <div class="rank-row p-2 px-3 mb-2 d-flex align-items-center justify-content-between">
+                      <div class="d-flex align-items-center gap-2">
+                        <div class="fw-bold small">#${index + 4}</div>
+                        ${avatarHTML(player)}
+                        <div>
+                          <div class="fw-bold small">${escapeHTML(player.Player)}</div>
+                          <div class="small text-muted-ft">${card.label}</div>
+                        </div>
+                      </div>
+                      <div class="fw-bold">${escapeHTML(player[card.field])}</div>
+                    </div>
+                  `).join("")}
+                </div>
+              ` : ""}
+            </article>
+          </div>
+        `;
+      }).join("");
+    }
+
+    function renderMainLeaderboard(players) {
+      const ranked = [...players].sort((a, b) => a.masterScore - b.masterScore);
+
+      document.getElementById("mainLeaderboard").innerHTML = `
+        <div class="table-responsive">
+          <table class="table table-dark table-hover align-middle mb-0">
+            <thead>
+              <tr>
+                <th>Rank</th>
+                <th>Player</th>
+                <th>Wins</th>
+                <th>Crowns</th>
+                <th>Avg Elims</th>
+                <th>Top 10%</th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody>
+              ${ranked.map((player, index) => {
+                const collapseId = `rankBreakdown${index}`;
+
+                return `
+                  <tr>
+                    <td class="fw-bold">#${index + 1}</td>
+                    <td>
+                      <div class="d-flex align-items-center gap-2">
+                        ${avatarHTML(player)}
+                        <div>
+                          <div class="fw-bold">${escapeHTML(player.Player)}</div>
+                          <div class="small text-muted-ft">${index === 0 ? "Overall Champion" : "Lower score is better"}</div>
+                        </div>
+                      </div>
+                    </td>
+                    <td>${player.Wins}</td>
+                    <td>${player.CrownWins}</td>
+                    <td>${player.AvgElims}</td>
+                    <td>${player.Top10Percent}</td>
+                    <td class="text-end">
+                      <button class="btn btn-outline-light btn-sm rounded-pill" type="button" data-bs-toggle="collapse" data-bs-target="#${collapseId}">
+                        Breakdown
+                      </button>
+                    </td>
+                  </tr>
+
+                  <tr class="collapse" id="${collapseId}">
+                    <td colspan="7">
+                      <div class="leaderboard-note p-3">
+                        <div class="d-flex flex-wrap">
+                          <span class="rank-weight-pill"><i class="bi bi-trophy-fill section-icon"></i>Wins Rank #${player.ranks.wins}</span>
+                          <span class="rank-weight-pill"><i class="bi bi-gem section-icon"></i>Crowns Rank #${player.ranks.crowns}</span>
+                          <span class="rank-weight-pill"><i class="bi bi-crosshair section-icon"></i>Avg Elims Rank #${player.ranks.avg}</span>
+                          <span class="rank-weight-pill"><i class="bi bi-bullseye section-icon"></i>Top 10% Rank #${player.ranks.top10}</span>
+                          <span class="rank-weight-pill"><i class="bi bi-stars section-icon"></i>Top 25% Rank #${player.ranks.top25}</span>
+                          <span class="rank-weight-pill"><i class="bi bi-calculator-fill section-icon"></i>Master Score ${player.masterScore}</span>
+                        </div>
+                        <div class="small text-muted-ft mt-2">
+                          Crown wins and wins carry the most weight. Top 25% is shown for transparency but does not affect the Master Rank score.
+                        </div>
+                      </div>
+                    </td>
+                  </tr>
+                `;
+              }).join("")}
+            </tbody>
+          </table>
         </div>
       `;
     }
 
-    function getSortedPlayers(data, field) {
-  return data
-    .filter(row => row.Player && row[field] !== "")
-    .map(row => ({
-      name: row.Player,
-      value: Number(row[field])
-    }))
-    .filter(row => Number.isFinite(row.value))
-    .sort((a, b) => b.value - a.value);
-}
+    function renderCrownLeaderboard(players) {
+      const ranked = [...players]
+  .filter(player => Number(player.CrownWins) > 0)
+  .sort((a, b) => b.CrownWins - a.CrownWins);
 
-function renderRestPlayers(players, card) {
-  const restPlayers = players.slice(3);
+      const container = document.getElementById("crownLeaderboard");
 
-  if (!restPlayers.length) return "";
-
-  return `
-    <details class="mt-3">
-      <summary class="btn btn-sm btn-light rounded-pill px-3 fw-bold">
-        View full ranking (${restPlayers.length})
-      </summary>
-
-      <div class="mt-3">
-        ${restPlayers.map((player, index) => `
-          <div class="rank-row d-flex align-items-center justify-content-between rounded-4 p-2 px-3 mb-2">
-            <div>
-              <div class="fw-semibold">${escapeHTML(player.name)}</div>
-              <div class="small text-white-50">Rank #${index + 4}</div>
-            </div>
-
-            <div class="text-end">
-              <div class="fw-bold">${escapeHTML(player.value)}</div>
-              <div class="small text-white-50">${escapeHTML(card.valueLabel)}</div>
-            </div>
-          </div>
-        `).join("")}
-      </div>
-    </details>
+if (!ranked.length) {
+  container.innerHTML = `
+    <div class="text-center py-4 text-white">
+      <i class="bi bi-gem fs-1 d-block mb-2"></i>
+      No Crown Wins submitted yet.
+    </div>
   `;
+  return;
 }
 
-function renderLeaderboard(data) {
-  document.getElementById("leaderboard").innerHTML = categories.map(card => {
-    const players = getSortedPlayers(data, card.field);
-    const topPlayers = players.slice(0, 3);
-
-    return `
-      <div class="col-12 col-lg-4">
-        <article class="stat-card h-100 rounded-5 border border-white border-opacity-10 shadow-lg overflow-hidden">
-
-          <div class="p-4" style="background:${card.gradient}">
-            <div class="d-flex align-items-center justify-content-between">
-              <div>
-                <div class="h6 fw-bolder text-white-80">Top 3</div>
-                <h2 class="h4 fw-bold mb-0">${escapeHTML(card.title)}</h2>
-              </div>
-              <div class="display-5">${card.icon}</div>
-            </div>
-          </div>
-
-          <div class="p-3 p-md-4">
-
-            ${
-              topPlayers.length
-                ? topPlayers.map((player, index) => `
-                  <div class="rank-row d-flex align-items-center justify-content-between rounded-4 p-3 mb-2">
-                    <div class="d-flex align-items-center gap-3">
-                      <span class="fs-4">${medals[index]}</span>
-                      <div>
-                        <div class="fw-bold">${escapeHTML(player.name)}</div>
-                        <div class="small text-white-50">Rank #${index + 1}</div>
-                      </div>
-                    </div>
-
-                    <div class="text-end">
-                      <div class="fs-4 fw-bold">${escapeHTML(player.value)}</div>
-                      <div class="small text-white-50">${escapeHTML(card.valueLabel)}</div>
-                    </div>
-                  </div>
-                `).join("")
-                : renderEmptyCard(card)
-            }
-
-            ${renderRestPlayers(players, card)}
-
-          </div>
-        </article>
+container.innerHTML = ranked.map((player, index) => `
+  <div class="rank-row p-3 mb-2 d-flex align-items-center justify-content-between">
+    <div class="d-flex align-items-center gap-3">
+      <div class="fw-bold">#${index + 1}</div>
+      ${avatarHTML(player)}
+      <div>
+        <div class="fw-bold">${escapeHTML(player.Player)}</div>
+        <div class="small text-muted-ft">
+          ${index === 0 ? '<span class="badge-token m-0"><i class="bi bi-gem"></i> Crown Champion</span>' : 'Crown Wins'}
+        </div>
       </div>
-    `;
-  }).join("");
-}
-    
-    async function loadLeaderboard() {
-      try {
-        if (!SHEET_CSV_URL || SHEET_CSV_URL.includes("PASTE_YOUR")) {
-          throw new Error("Missing Google Sheet CSV link.");
-        }
+    </div>
+    <div class="display-6 fw-bold">${player.CrownWins}</div>
+  </div>
+`).join("");
+    }
 
-        const response = await fetch(SHEET_CSV_URL, { cache: "no-store" });
+    function renderMilestones(players) {
+      const totals = {
+        Wins: players.reduce((sum, player) => sum + player.Wins, 0),
+        CrownWins: players.reduce((sum, player) => sum + player.CrownWins, 0),
+        Eliminations: players.reduce((sum, player) => sum + player.Eliminations, 0),
+        MatchesPlayed: players.reduce((sum, player) => sum + player.MatchesPlayed, 0),
+        Top10Percent: players.reduce((sum, player) => sum + player.Top10Percent, 0),
+        Top25Percent: players.reduce((sum, player) => sum + player.Top25Percent, 0)
+      };
 
-        if (!response.ok) {
-          throw new Error("Could not load leaderboard data.");
-        }
+      const milestones = [
+        { title: "Community Wins", current: totals.Wins, target: 500, icon: "bi-trophy-fill" },
+        { title: "Community Crown Wins", current: totals.CrownWins, target: 200, icon: "bi-gem" },
+        { title: "Community Eliminations", current: totals.Eliminations, target: 5000, icon: "bi-crosshair" },
+        { title: "Community Matches", current: totals.MatchesPlayed, target: 1000, icon: "bi-controller" },
+        { title: "Community Top 10%", current: totals.Top10Percent, target: 500, icon: "bi-bullseye" },
+        { title: "Community Top 25%", current: totals.Top25Percent, target: 1000, icon: "bi-stars" }
+      ];
 
-        const csvText = await response.text();
-        const data = parseCSV(csvText);
+      document.getElementById("milestonesList").innerHTML = milestones.map(item => {
+        const percentage = Math.min(100, Math.round((item.current / item.target) * 100));
 
-        renderLeaderboard(data);
-
-        document.getElementById("updatedDate").textContent =
-          new Date().toLocaleDateString("en-ZA", {
-            day: "numeric",
-            month: "long",
-            year: "numeric"
-          });
-      } catch (error) {
-        document.getElementById("leaderboard").innerHTML = `
-          <div class="col-12">
-            <div class="alert alert-warning rounded-4 mb-0">
-              Leaderboard could not load. Please check your published Google Sheet CSV link.
+        return `
+          <div class="col-md-6 col-xl-4">
+            <div class="leaderboard-note p-3 h-100">
+              <div class="d-flex align-items-center justify-content-between mb-2">
+                <div class="fw-bold"><i class="bi ${item.icon} section-icon me-2"></i>${item.title}</div>
+                <div class="small text-soft">${percentage}%</div>
+              </div>
+              <div class="progress mb-2">
+                <div class="progress-bar" style="width:${percentage}%"></div>
+              </div>
+              <div class="small text-muted-ft">${item.current} / ${item.target}</div>
             </div>
           </div>
         `;
+      }).join("");
+    }
 
-        document.getElementById("updatedDate").textContent = "Not available";
+    function renderBadges(players) {
+
+  const ranked = players
+    .map(player => ({
+      player,
+      badges: playerBadges(player)
+    }))
+    .filter(item => item.badges.length > 0)
+    .sort((a, b) => b.badges.length - a.badges.length);
+
+  const initialCount = 6;
+  const container = document.getElementById("badgesList");
+
+  if (!ranked.length) {
+    container.innerHTML = `
+      <div class="col-12">
+        <div class="text-center py-4 text-muted">
+          <i class="bi bi-award fs-1 d-block mb-2"></i>
+          No badges have been earned yet.
+        </div>
+      </div>
+    `;
+    return;
+  }
+
+  function renderCards(showAll = false) {
+
+    const visible = showAll
+      ? ranked
+      : ranked.slice(0, initialCount);
+
+    container.innerHTML = visible.map(({ player, badges }) => `
+      <div class="col-12 col-lg-6">
+        <div class="leaderboard-note p-3 h-100">
+
+          <div class="d-flex align-items-center gap-3 mb-3">
+            ${avatarHTML(player)}
+
+            <div>
+              <div class="fw-bold">${escapeHTML(player.Player)}</div>
+              <div class="small text-muted-ft">
+                ${badges.length} badge${badges.length === 1 ? "" : "s"} earned
+              </div>
+            </div>
+          </div>
+
+          <div class="d-flex flex-wrap">
+            ${badges.join("")}
+          </div>
+
+        </div>
+      </div>
+    `).join("");
+
+    if (!showAll && ranked.length > initialCount) {
+
+      container.innerHTML += `
+        <div class="col-12 text-center mt-3">
+          <button
+            id="showMoreBadges"
+            class="btn btn-outline-light rounded-pill px-4">
+            <i class="bi bi-chevron-down me-2"></i>
+            Show More Players
+          </button>
+        </div>
+      `;
+
+      document
+        .getElementById("showMoreBadges")
+        .addEventListener("click", () => renderCards(true));
+    }
+  }
+
+  renderCards();
+}
+
+    function countdown(dateValue) {
+      const target = new Date(String(dateValue).replace(" ", "T"));
+      if (Number.isNaN(target.getTime())) return "Date TBC";
+
+      const difference = target - new Date();
+      if (difference <= 0) return "Started";
+
+      const days = Math.floor(difference / 86400000);
+      const hours = Math.floor((difference % 86400000) / 3600000);
+      const minutes = Math.floor((difference % 3600000) / 60000);
+
+      return days > 0 ? `${days}d ${hours}h ${minutes}m` : `${hours}h ${minutes}m`;
+    }
+
+    function renderEvents(events) {
+      const sorted = [...events].sort((a, b) => toNumber(a.SortOrder) - toNumber(b.SortOrder));
+
+      document.getElementById("eventsList").innerHTML = sorted.length ? sorted.map(event => `
+        <div class="col-md-6 col-xl-4">
+          <div class="leaderboard-note p-3 h-100">
+            <div class="d-flex align-items-start justify-content-between gap-3 mb-2">
+              <div>
+                <div class="small text-muted-ft text-uppercase letter-space fw-bold">${escapeHTML(event.Status || "Upcoming")}</div>
+                <h3 class="h5 fw-bold mb-1">${escapeHTML(event.Title)}</h3>
+              </div>
+              <i class="bi ${escapeHTML(event.Icon || "bi-calendar-event-fill")} section-icon fs-3"></i>
+            </div>
+            <p class="small text-soft mb-3">${escapeHTML(event.Description)}</p>
+            <div class="rank-weight-pill m-0"><i class="bi bi-clock-fill"></i> ${escapeHTML(countdown(event.EventDateTime))}</div>
+          </div>
+        </div>
+      `).join("") : `<div class="col-12"><div class="text-soft">No events added yet.</div></div>`;
+    }
+
+    function renderAll(players, events) {
+      const enriched = enrichPlayers(players);
+
+      renderTopCards(enriched);
+      renderMainLeaderboard(enriched);
+      renderCrownLeaderboard(enriched);
+      renderMilestones(enriched);
+      renderBadges(enriched);
+      renderEvents(events);
+
+      const today = new Date().toLocaleDateString("en-ZA", {
+        day: "numeric",
+        month: "long",
+        year: "numeric"
+      });
+
+      const lastUpdated =
+    players.length
+        ? players[0].LastUpdated
+        : "Not Available";
+
+      document.getElementById("updatedDate").textContent = lastUpdated;
+      document.getElementById("footerUpdatedDate").textContent = lastUpdated;
+      updateNavigation();
+    }
+
+    async function loadCSV(url) {
+      const response = await fetch(url, { cache: "no-store" });
+      if (!response.ok) throw new Error("CSV could not load");
+      return parseCSV(await response.text());
+    }
+
+    async function loadPage() {
+      try {
+        let players;
+        let events;
+
+        if (DEV_MODE) {
+          players = normalizePlayers(samplePlayers);
+          events = sampleEvents;
+        } else {
+          players = normalizePlayers(await loadCSV(PLAYERS_CSV_URL));
+          events = await loadCSV(EVENTS_CSV_URL);
+        }
+
+        renderAll(players, events);
+      } catch (error) {
+        console.error("Loading failed:", error);
+        renderAll(normalizePlayers(samplePlayers), sampleEvents);
       }
     }
 
-    loadLeaderboard();
-  </script>
+    function updateNavigation() {
+      const ids = ["leaderboards", "crowns", "events", "milestones", "badges", "join"];
+      const sections = ids.map(id => document.getElementById(id)).filter(Boolean);
+      const links = [...document.querySelectorAll("#pageNav a, #mobilePageNav a")];
+      let current = sections[0]?.id || "";
+      const line = window.innerHeight * .38;
 
+      sections.forEach(section => {
+        const rect = section.getBoundingClientRect();
+        if (rect.top <= line && rect.bottom > line) current = section.id;
+      });
+
+      links.forEach(link => {
+        link.classList.toggle("active", link.getAttribute("href") === `#${current}`);
+      });
+    }
+
+    window.addEventListener("scroll", updateNavigation, { passive: true });
+    window.addEventListener("resize", updateNavigation);
+
+    document.addEventListener("DOMContentLoaded", () => {
+      loadPage();
+      updateNavigation();
+    });
+  </script>
 </body>
+
 </html>
