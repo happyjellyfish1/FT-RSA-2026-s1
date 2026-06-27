@@ -1791,7 +1791,7 @@
               </div>
               <i class="bi ${event.Icon} section-icon fs-3"></i>
             </div>
-            <p class="small text-soft mb-0">${escapeHTML(event.Description)}</p>
+            <p class="small text-soft mb-0">${escapeHTML(event.Description).replace(/&lt;br&gt;/gi,"<br/>")}</p>
           </div>
         </div>
       `).join("") : `<div class="col-12"><div class="text-soft">No active events.</div></div>`;
