@@ -57,13 +57,25 @@
   }
 }
 
-    .sidebar {
-      position: sticky;
-      top: 0;
-      min-height: 100vh;
-      background: linear-gradient(180deg, rgba(17,24,39,.98), rgba(15,23,42,.96));
-      border-right: 1px solid var(--border);
-    }
+    .sidebar{
+    position:sticky;
+    top:0;
+
+    display:flex;
+    flex-direction:column;
+
+    height:100vh;
+
+    background:linear-gradient(
+        180deg,
+        rgba(17,24,39,.98),
+        rgba(15,23,42,.96)
+    );
+
+    border-right:1px solid var(--border);
+
+    overflow:hidden;
+}
 
     .glass-card {
       background: rgba(255,255,255,.065);
@@ -225,33 +237,79 @@
       border-bottom: 1px solid var(--border);
     }
 
-    .mobile-bottom-nav {
-      border-top: 1px solid var(--border);
-      z-index: 1050;
-    }
+    .mobile-bottom-nav{
+    position:fixed;
+    bottom:0;
+    left:0;
+    right:0;
 
-    .mobile-bottom-nav a {
-      color: var(--soft);
-      text-decoration: none;
-      flex: 1;
-      min-width: 0;
-      padding: .65rem .15rem;
-      font-size: .7rem;
-      line-height: 1.1;
-      font-weight: 700;
-    }
+    display:flex;
+    align-items:stretch;
 
-    .mobile-bottom-nav a i {
-      display: block;
-      color: var(--p3);
-      font-size: 1.25rem;
-      margin-bottom: .2rem;
-    }
+    height:72px;
 
-    .mobile-bottom-nav a.active { color: #fff; }
+    background:rgba(17,24,39,.96);
+    backdrop-filter:blur(18px);
+    -webkit-backdrop-filter:blur(18px);
+
+    border-top:1px solid rgba(255,255,255,.08);
+
+    z-index:1045;
+
+    padding:0 .35rem;
+}
+
+    .mobile-bottom-nav a{
+    flex:1;
+
+    display:flex;
+    flex-direction:column;
+
+    align-items:center;
+    justify-content:center;
+
+    gap:.2rem;
+
+    color:#cbd5e1;
+    text-decoration:none;
+
+    font-size:.67rem;
+    font-weight:700;
+
+    transition:.2s;
+
+    border-radius:14px;
+
+    margin:6px 2px;
+}
+
+    .mobile-bottom-nav a i{
+
+    font-size:1.25rem;
+
+    line-height:1;
+
+    color:#b78cff;
+
+    transition:.2s;
+
+}
+
+    .mobile-bottom-nav a.active{
+
+    color:#ffffff;
+
+    background:rgba(139,92,246,.16);
+
+}
+.mobile-bottom-nav a.active i{
+
+    color:#ffffff;
+
+}
 
     @media (max-width: 991.98px) {
-      body { padding-bottom: 74px; }
+      body { padding-bottom: 86px; }
       .sidebar-wrap { display: none; }
       .page-shell { padding-left: 1rem !important; padding-right: 1rem !important; }
     }
@@ -259,6 +317,65 @@
     @media (min-width: 992px) {
       .mobile-header,
       .mobile-bottom-nav { display: none !important; }
+    }
+
+
+    .streamer-card {
+      position: relative;
+      overflow: hidden;
+      border: 1px solid rgba(192,132,252,.26);
+      background:
+        radial-gradient(circle at top right, rgba(192,132,252,.20), transparent 34%),
+        rgba(15,23,42,.52);
+      border-radius: 1.25rem;
+    }
+
+    .streamer-card::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(135deg, rgba(139,92,246,.14), transparent 48%);
+      pointer-events: none;
+    }
+
+    .streamer-card > * { position: relative; }
+
+    .streamer-platform {
+      display: inline-flex;
+      align-items: center;
+      gap: .35rem;
+      border-radius: 999px;
+      padding: .32rem .65rem;
+      background: rgba(255,255,255,.08);
+      border: 1px solid rgba(255,255,255,.12);
+      color: var(--soft);
+      font-size: .78rem;
+      font-weight: 800;
+    }
+
+    .mobile-menu-fab {
+      width: 3.25rem;
+      height: 3.25rem;
+      margin-top: -1.15rem;
+      border-radius: 50%;
+      border: 1px solid rgba(192,132,252,.48);
+      background: linear-gradient(135deg, var(--p), var(--p2));
+      color: #fff !important;
+      box-shadow: 0 0 24px rgba(139,92,246,.42);
+      flex: 0 0 3.25rem !important;
+    }
+
+    .mobile-menu-fab i {
+      color: #fff !important;
+      font-size: 1.45rem !important;
+      margin-bottom: 0 !important;
+    }
+
+    .mobile-menu-fab span {
+      display: block;
+      font-size: .58rem;
+      line-height: 1;
+      margin-top: .08rem;
     }
 
 
@@ -314,6 +431,63 @@
       .avatar-circle { width: 38px; height: 38px; flex-basis: 38px; }
       .mobile-bottom-nav a { font-size: .68rem; }
     }
+    .nav-heading{
+
+    color:#b78cff;
+
+    font-size:.72rem;
+
+    font-weight:800;
+
+    letter-spacing:.15rem;
+
+    text-transform:uppercase;
+
+    margin:1.25rem 0 .65rem;
+
+    padding-left:.75rem;
+
+}
+.nav-divider{
+
+    margin:1rem .5rem;
+
+    border-color:rgba(255,255,255,.08);
+
+    opacity:1;
+
+}
+.sidebar-header{
+    flex-shrink:0;
+}
+
+.desktop-nav-scroll{
+    flex:1;
+
+    overflow-y:auto;
+    overflow-x:hidden;
+
+    min-height:0;
+
+    padding-right:.35rem;
+    padding-bottom:1rem;
+}
+.desktop-nav-scroll::-webkit-scrollbar{
+    width:8px;
+}
+
+.desktop-nav-scroll::-webkit-scrollbar-track{
+    background:transparent;
+}
+
+.desktop-nav-scroll::-webkit-scrollbar-thumb{
+    background:rgba(139,92,246,.65);
+    border-radius:20px;
+}
+
+.desktop-nav-scroll::-webkit-scrollbar-thumb:hover{
+    background:#8b5cf6;
+}
   </style>
 </head>
 
@@ -322,23 +496,85 @@
     <div class="row">
       <aside class="sidebar-wrap col-lg-3 col-xl-2 p-0">
         <div class="sidebar p-4">
-          <div class="mb-5">
+          <div class="sidebar-header mb-4">
             <img src="ft-logo-m.png" alt="RSA Fortnite Tjommies" class="img-fluid mb-3" style="max-width: 140px;">
             <div class="small text-muted-ft">The</div>
             <div class="fw-bold text-uppercase letter-space fs-5">RSA Fortnite Tjommies</div>
             <div class="small text-muted-ft">Community Hub</div>
           </div>
 
-          <nav id="pageNav" class="nav nav-dashboard flex-column gap-2">
-           <a class="nav-link active" href="#platforms"><i class="bi bi-phone-fill me-2"></i>Platforms</a>
-           <a class="nav-link" href="#rising"><i class="bi bi-graph-up-arrow me-2"></i>Rising Stars</a>
-           <a class="nav-link" href="#mainLeaderboard"><i class="bi bi-trophy-fill me-2"></i>Rankings</a>
-            <a class="nav-link" href="#milestones"><i class="bi bi-award-fill me-2"></i>Milestones</a>
-            <a class="nav-link" href="#badges"><i class="bi bi-patch-check-fill me-2"></i>Badges</a>
-            <a class="nav-link" href="#events"><i class="bi bi-calendar-event-fill me-2"></i>Events</a>
-            <a class="nav-link" href="#crowns"><i class="bi bi-gem me-2"></i>Crowns</a>
-            <a class="nav-link" href="#join"><i class="bi bi-people-fill me-2"></i>Join</a>
-          </nav>
+          <div class="desktop-nav-scroll">
+
+    <nav id="pageNav" class="nav nav-dashboard flex-column gap-2">
+
+        <div class="nav-heading">
+            <i class="bi bi-grid-fill me-2"></i>Overview
+        </div>
+
+        <a class="nav-link active" href="#platforms">
+            <i class="bi bi-controller"></i>
+            <span>Platforms</span>
+        </a>
+
+        <a class="nav-link" href="#streamers">
+            <i class="bi bi-camera-video-fill"></i>
+            <span>Streamers</span>
+        </a>
+
+        <a class="nav-link" href="#rising">
+            <i class="bi bi-graph-up-arrow"></i>
+            <span>Rising Stars</span>
+        </a>
+
+        <a class="nav-link" href="#rankings">
+            <i class="bi bi-trophy-fill"></i>
+            <span>Rankings</span>
+        </a>
+
+
+        <hr class="nav-divider">
+
+
+        <div class="nav-heading">
+            <i class="bi bi-people-fill me-2"></i>Community
+        </div>
+
+        <a class="nav-link" href="#milestones">
+            <i class="bi bi-award-fill"></i>
+            <span>Milestones</span>
+        </a>
+
+        <a class="nav-link" href="#badges">
+            <i class="bi bi-patch-check-fill"></i>
+            <span>Badges</span>
+        </a>
+
+        <a class="nav-link" href="#events">
+            <i class="bi bi-calendar-event-fill"></i>
+            <span>Events</span>
+        </a>
+
+        <a class="nav-link" href="#crowns">
+            <i class="bi bi-gem"></i>
+            <span>Crowns</span>
+        </a>
+
+
+        <hr class="nav-divider">
+
+
+        <div class="nav-heading">
+            <i class="bi bi-box-arrow-in-right me-2"></i>Join
+        </div>
+
+        <a class="nav-link" href="#join">
+            <i class="bi bi-person-plus-fill"></i>
+            <span>Become a Tjommie</span>
+        </a>
+
+    </nav>
+
+</div>
         </div>
       </aside>
 
@@ -417,6 +653,10 @@
 
             <span class="badge rounded-pill text-bg-dark px-3 py-2">
                 <i class="bi bi-calendar-event-fill me-2"></i>Events
+            </span>
+
+            <span class="badge rounded-pill text-bg-dark px-3 py-2">
+                <i class="bi bi-broadcast-pin me-2"></i>Streamers
             </span>
 
         </div>
@@ -574,150 +814,29 @@
         <section id="badges" class="container-fluid px-0 mb-4">
           <article class="glass-card rounded-5 p-3 p-md-4">
             <div class="d-flex align-items-center justify-content-between gap-3 flex-wrap mb-3">
-              <div class="d-flex justify-content-between align-items-center flex-wrap gap-3 mb-4">
-
-    <div>
-        <div class="small text-soft text-uppercase letter-space fw-bold mb-1">
-            Player Progress
-        </div>
-        <h2 class="h3 fw-bold mb-0">
-            Badge Collection
-        </h2>
-    </div>
-
-</div>
-              <button
-            class="btn btn-outline-light rounded-pill px-3"
-            data-bs-toggle="collapse"
-            data-bs-target="#badgeKey">
-
-            <i class="bi bi-grid-3x3-gap-fill me-2"></i>
-            View Badge Guide
-
-        </button>
+              <div>
+                <div class="small text-soft text-uppercase letter-space fw-bold mb-1">Player Progress</div>
+                <h2 class="h3 fw-bold mb-0">Badge Collection</h2>
+              </div>
+              <span class="token"><i class="bi bi-patch-check-fill section-icon"></i>Highest badge per path only</span>
             </div>
-
-            <div class="collapse mb-3" id="badgeKey">
-  <div class="soft-panel p-3">
-    <p class="small text-muted-ft mb-3">
-      Each path only shows the player’s highest earned badge. Levelling up replaces the previous badge in that same path.
-    </p>
-
-    <div class="row g-3">
-
-      <div class="col-lg-6">
-        <div class="soft-panel p-3 h-100">
-          <h3 class="h5 fw-bold mb-3">
-            <i class="bi bi-trophy-fill text-warning me-2"></i>Victory Path
-          </h3>
-
-          <div class="d-flex flex-wrap gap-2">
-            <span class="token">1 Win Rookie</span>
-            <span class="token">10 Win Hunter</span>
-            <span class="token">30 Win Grinder</span>
-            <span class="token">75 Win Specialist</span>
-            <span class="token">150 Win Elite</span>
-            <span class="token">300 Victory Legend</span>
-          </div>
-
-          <div class="small text-muted-ft mt-3">Based on Victory Royales.</div>
-        </div>
-      </div>
-
-      <div class="col-lg-6">
-        <div class="soft-panel p-3 h-100">
-          <h3 class="h5 fw-bold mb-3">
-            <i class="bi bi-gem text-info me-2"></i>Crown Path
-          </h3>
-
-          <div class="d-flex flex-wrap gap-2">
-            <span class="token">5 Crown Starter</span>
-            <span class="token">20 Crown Hunter</span>
-            <span class="token">50 Crown Collector</span>
-            <span class="token">100 Crown Royalty</span>
-            <span class="token">250 Crown Champion</span>
-          </div>
-
-          <div class="small text-muted-ft mt-3">Based on Crown Victory Royales.</div>
-        </div>
-      </div>
-
-      <div class="col-lg-6">
-        <div class="soft-panel p-3 h-100">
-          <h3 class="h5 fw-bold mb-3">
-            <i class="bi bi-crosshair text-danger me-2"></i>Combat Path
-          </h3>
-
-          <div class="d-flex flex-wrap gap-2">
-            <span class="token">100 Combat Rookie</span>
-            <span class="token">500 Combat Ready</span>
-            <span class="token">1,500 Elim Hunter</span>
-            <span class="token">4,000 Elim Beast</span>
-            <span class="token">10,000 Elim Legend</span>
-          </div>
-
-          <div class="small text-muted-ft mt-3">Based on lifetime eliminations.</div>
-        </div>
-      </div>
-
-      <div class="col-lg-6">
-        <div class="soft-panel p-3 h-100">
-          <h3 class="h5 fw-bold mb-3">
-            <i class="bi bi-people-fill text-success me-2"></i>Community Path
-          </h3>
-
-          <div class="d-flex flex-wrap gap-2">
-            <span class="token">10 Squad Starter</span>
-            <span class="token">50 Squad Regular</span>
-            <span class="token">150 Community Grinder</span>
-            <span class="token">300 Tjommie Veteran</span>
-            <span class="token">600 Community Legend</span>
-          </div>
-
-          <div class="small text-muted-ft mt-3">Based on lifetime matches played.</div>
-        </div>
-      </div>
-
-      <div class="col-lg-6">
-        <div class="soft-panel p-3 h-100">
-          <h3 class="h5 fw-bold mb-3">
-            <i class="bi bi-stars text-primary me-2"></i>Consistency Path
-          </h3>
-
-          <div class="d-flex flex-wrap gap-2">
-            <span class="token">25 Top 10 Starter</span>
-            <span class="token">75 Top 10 Regular</span>
-            <span class="token">200 Consistent Player</span>
-            <span class="token">500 Top 10 Grinder</span>
-            <span class="token">1,000 Placement Legend</span>
-          </div>
-
-          <div class="small text-muted-ft mt-3">Based on lifetime Top 10 finishes.</div>
-        </div>
-      </div>
-
-      <div class="col-lg-6">
-        <div class="soft-panel p-3 h-100">
-          <h3 class="h5 fw-bold mb-3">
-            <i class="bi bi-patch-check-fill text-warning me-2"></i>Special Badges
-          </h3>
-
-          <div class="d-flex flex-wrap gap-2">
-            <span class="token"><i class="bi bi-star-fill me-1"></i>Founder</span>
-            <span class="token"><i class="bi bi-trophy-fill me-1"></i>Champion</span>
-            <span class="token"><i class="bi bi-calendar-event-fill me-1"></i>Event Winner</span>
-            <span class="token"><i class="bi bi-heart-fill me-1"></i>Community Choice</span>
-          </div>
-
-          <div class="small text-muted-ft mt-3">Awarded manually by the community or admins.</div>
-        </div>
-      </div>
-
-    </div>
-  </div>
-</div>
-
+            <p class="small text-muted-ft mb-3">Each player card now shows only their earned badges once. No duplicate dropdown collections.</p>
             <div class="row g-3" id="badgesList"></div>
+          </article>
+        </section>
+
+        <section id="streamers" class="container-fluid px-0 mb-4">
+          <article class="glass-card rounded-5 p-3 p-md-4">
+            <div class="d-flex align-items-center justify-content-between gap-3 flex-wrap mb-3">
+              <div>
+                <div class="small text-soft text-uppercase letter-space fw-bold mb-1">Watch The Tjommies</div>
+                <h2 class="h3 fw-bold mb-0"><i class="bi bi-broadcast-pin section-icon me-2"></i>Player Streamers</h2>
+              </div>
+              <span class="token"><i class="bi bi-camera-video-fill section-icon"></i>Support the squad</span>
+            </div>
+            <div class="row g-3" id="streamersList">
+              <div class="col-12 text-soft">Loading streamers...</div>
+            </div>
           </article>
         </section>
 
@@ -765,14 +884,32 @@
     </div>
   </div>
 
-  <nav id="mobilePageNav" class="mobile-bottom-nav fixed-bottom d-flex text-center">
+  <nav id="mobilePageNav" class="mobile-bottom-nav fixed-bottom d-flex text-center align-items-center px-1">
     <a class="active" href="#platforms"><i class="bi bi-phone-fill"></i>Platforms</a>
     <a href="#rising"><i class="bi bi-graph-up-arrow"></i>Stars</a>
+    <a class="mobile-menu-fab d-inline-flex flex-column align-items-center justify-content-center" href="#" data-bs-toggle="offcanvas" data-bs-target="#mobileMoreMenu" aria-controls="mobileMoreMenu">
+      <i class="bi bi-grid-3x3-gap-fill"></i><span>Menu</span>
+    </a>
     <a href="#rankings"><i class="bi bi-trophy-fill"></i>Rank</a>
-    <a href="#milestones"><i class="bi bi-award-fill"></i>Goals</a>
-    <a href="#crowns"><i class="bi bi-gem"></i>Crowns</a>
     <a href="#join"><i class="bi bi-people-fill"></i>Join</a>
   </nav>
+
+  <div class="offcanvas offcanvas-bottom bg-dark text-white" tabindex="-1" id="mobileMoreMenu" aria-labelledby="mobileMoreMenuTitle" style="height:auto; border-top:1px solid rgba(255,255,255,.14);">
+    <div class="offcanvas-header">
+      <h2 class="offcanvas-title h5" id="mobileMoreMenuTitle">More Sections</h2>
+      <button type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+    </div>
+    <div class="offcanvas-body pt-0">
+      <div class="row g-2 text-center" id="mobileMoreLinks">
+        <div class="col-4"><a class="btn btn-outline-light rounded-4 w-100 py-3" href="#milestones" ><i class="bi bi-award-fill d-block fs-4 mb-1"></i>Goals</a></div>
+        <div class="col-4"><a class="btn btn-outline-light rounded-4 w-100 py-3" href="#badges" ><i class="bi bi-patch-check-fill d-block fs-4 mb-1"></i>Badges</a></div>
+        <div class="col-4"><a class="btn btn-outline-light rounded-4 w-100 py-3" href="#streamers" ><i class="bi bi-broadcast-pin d-block fs-4 mb-1"></i>Streamers</a></div>
+        <div class="col-4"><a class="btn btn-outline-light rounded-4 w-100 py-3" href="#events"><i class="bi bi-calendar-event-fill d-block fs-4 mb-1"></i>Events</a></div>
+        <div class="col-4"><a class="btn btn-outline-light rounded-4 w-100 py-3" href="#crowns" ><i class="bi bi-gem d-block fs-4 mb-1"></i>Crowns</a></div>
+        <div class="col-4"><a class="btn btn-outline-light rounded-4 w-100 py-3" href="#platforms" ><i class="bi bi-arrow-up-circle-fill d-block fs-4 mb-1"></i>Top</a></div>
+      </div>
+    </div>
+  </div>
 
   <div class="modal fade" id="crownPathModal" tabindex="-1" aria-labelledby="crownPathTitle" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
@@ -796,10 +933,11 @@
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js"></script>
 
   <script>
-      const PLAYERS_CSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vRH_ns4kWi8O_M-afqlNlxUOOA_yZMm04LlQZYVKLIewx7oV-ROKD0Sa0OSXtywOncScNlWUO9QIRml/pub?gid=622282576&single=true&output=csv";
+  
+       const PLAYERS_CSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vRH_ns4kWi8O_M-afqlNlxUOOA_yZMm04LlQZYVKLIewx7oV-ROKD0Sa0OSXtywOncScNlWUO9QIRml/pub?gid=622282576&single=true&output=csv";
     const EVENTS_CSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vRH_ns4kWi8O_M-afqlNlxUOOA_yZMm04LlQZYVKLIewx7oV-ROKD0Sa0OSXtywOncScNlWUO9QIRml/pub?gid=145552210&single=true&output=csv";
 
-
+  
     const PLATFORM_CONFIG = {
       Mobile: { icon: "bi-phone-fill", label: "Mobile", cls: "mobile", text: "text-platform-mobile" },
       Console: { icon: "bi-controller", label: "Console", cls: "console", text: "text-platform-console" },
@@ -826,6 +964,16 @@
     function safeIcon(icon, fallback = "bi-calendar-event-fill") {
       const value = String(icon || "").trim();
       return /^bi-[a-z0-9-]+$/i.test(value) ? value : fallback;
+    }
+
+    function safeExternalURL(value) {
+      const clean = String(value || "").trim();
+      try {
+        const url = new URL(clean);
+        return ["https:", "http:"].includes(url.protocol) ? url.href : "";
+      } catch (error) {
+        return "";
+      }
     }
 
     function toNumber(value) {
@@ -899,7 +1047,12 @@
           CrownWins: toNumber(player.CrownWins),
           Avatar: String(player.Avatar || "").trim(),
           Active: String(player.Active || "TRUE").trim(),
-          LastUpdated: String(player.LastUpdated || "").trim()
+          LastUpdated: String(player.LastUpdated || "").trim(),
+          StreamerActive: ["TRUE", "YES", "Y", "1"].includes(String(player.StreamerActive || player.Streamer || "").trim().toUpperCase()),
+          StreamName: String(player.StreamName || player.StreamTitle || "").trim(),
+          StreamPlatform: String(player.StreamPlatform || "").trim(),
+          StreamURL: String(player.StreamURL || player.StreamLink || "").trim(),
+          StreamDescription: String(player.StreamDescription || player.StreamBio || "").trim()
         }));
     }
 
@@ -1164,14 +1317,22 @@
       `;
     }
 
+    function getActivePlatforms(players) {
+      return ["Console", "PC", "Mobile"].filter(platform => players.some(player => player.Platform === platform));
+    }
+
     function renderPlatformChampions(players) {
-      const platforms = ["Mobile", "Console", "PC"];
+      const platforms = getActivePlatforms(players);
+      if (!platforms.length) {
+        document.getElementById("platformChampions").innerHTML = `<div class="col-12 text-soft">No platform stats submitted yet.</div>`;
+        return;
+      }
       document.getElementById("platformChampions").innerHTML = platforms.map(platform => {
         const config = PLATFORM_CONFIG[platform];
         const champion = [...players].filter(player => player.Platform === platform).sort((a, b) => a.masterScore - b.masterScore)[0];
 
         return `
-          <div class="col-12 col-sm-4">
+          <div class="col-12 col-md-6 col-xl-4">
             <div class="platform-card ${config.cls} p-3 text-center h-100">
               <i class="bi ${config.icon} ${config.text} fs-2"></i>
               <div class="${config.text} text-uppercase fw-bold small mt-2">${config.label} Champion</div>
@@ -1187,7 +1348,11 @@
     }
 
     function renderPlatformBattle(players) {
-      const platforms = ["Console", "Mobile", "PC"];
+      const platforms = getActivePlatforms(players);
+      if (!platforms.length) {
+        document.getElementById("platformBattle").innerHTML = `<div class="col-12 text-soft">No platform stats submitted yet.</div>`;
+        return;
+      }
       const totals = Object.fromEntries(platforms.map(platform => [
         platform,
         players.filter(player => player.Platform === platform).reduce((sum, player) => sum + player.Wins, 0)
@@ -1450,7 +1615,7 @@
       const ranked = players
         .map(player => ({ player, badges: playerBadges(player) }))
         .filter(item => item.badges.length > 0)
-        .sort((a, b) => b.badges.length - a.badges.length);
+        .sort((a, b) => b.badges.length - a.badges.length || b.player.Wins - a.player.Wins);
 
       const container = document.getElementById("badgesList");
 
@@ -1459,39 +1624,18 @@
         return;
       }
 
-      const randomPlayers = shuffleItems(ranked);
-      const visiblePlayers = randomPlayers.slice(0, 3);
-      const hiddenPlayers = randomPlayers.slice(3);
+      const visiblePlayers = ranked.slice(0, 6);
+      const hiddenPlayers = ranked.slice(6);
 
-      function badgeCard({ player, badges }, index) {
-        const collapseId = `badgeCollection${index}`;
-        const previewCount = Math.min(badges.length, 6);
-        const previewIcons = badges.map(b => `
-  <span class="token">
-    <i class="bi ${b.icon} ${b.colour} me-1"></i>${b.name}
-  </span>
-`).join("");
-
+      function badgeCard({ player, badges }) {
         return `
           <div class="col-12 col-md-6 col-xl-4">
             <div class="soft-panel p-3 h-100 text-center d-flex flex-column align-items-center">
               <div class="mb-2">${avatarHTML(player)}</div>
-              <div class="fw-bold player-name mb-3">${escapeHTML(player.Player)}</div>
-
-              <div class="d-flex flex-wrap justify-content-center gap-2 mb-3" aria-label="Badge preview">
-                ${previewIcons}
-              </div>
-
-              <div class="small text-muted-ft mb-3">
-                ${badges.length} Badge${badges.length === 1 ? "" : "s"} Earned
-              </div>
-
-              <button class="btn btn-outline-light btn-sm rounded-pill px-3 mt-auto" type="button" data-bs-toggle="collapse" data-bs-target="#${collapseId}" aria-expanded="false" aria-controls="${collapseId}">
-                <i class="bi bi-chevron-down me-1"></i>View Collection
-              </button>
-
-              <div class="collapse w-100 mt-3" id="${collapseId}">
-                <div class="d-flex flex-wrap justify-content-center gap-2">${badges.map(b=>b.html).join("")}</div>
+              <div class="fw-bold player-name mb-2">${escapeHTML(player.Player)}</div>
+              <div class="small text-muted-ft mb-3">${badges.length} Badge${badges.length === 1 ? "" : "s"} Earned</div>
+              <div class="d-flex flex-wrap justify-content-center gap-2 mt-auto" aria-label="Earned badges">
+                ${badges.map(b => b.html).join("")}
               </div>
             </div>
           </div>
@@ -1499,14 +1643,53 @@
       }
 
       container.innerHTML = `
-        ${visiblePlayers.map((item, index) => badgeCard(item, index)).join("")}
+        ${visiblePlayers.map(item => badgeCard(item)).join("")}
         ${hiddenPlayers.length ? `
           <div class="collapse row g-3 mt-0" id="moreBadgePlayers">
-            ${hiddenPlayers.map((item, index) => badgeCard(item, index + 3)).join("")}
+            ${hiddenPlayers.map(item => badgeCard(item)).join("")}
           </div>
           ${seeMoreButton("moreBadgePlayers", "See More Players")}
         ` : ""}
       `;
+    }
+
+    function renderStreamers(players) {
+      const container = document.getElementById("streamersList");
+      const streamers = players
+        .filter(player => player.StreamerActive && safeExternalURL(player.StreamURL))
+        .sort((a, b) => b.Wins - a.Wins || b.CrownWins - a.CrownWins);
+
+      if (!streamers.length) {
+        container.innerHTML = `<div class="col-12"><div class="text-center py-4 text-muted-ft"><i class="bi bi-broadcast-pin fs-1 d-block mb-2"></i>No streamers have been added yet.</div></div>`;
+        return;
+      }
+
+      container.innerHTML = streamers.map(player => {
+        const url = safeExternalURL(player.StreamURL);
+        const platform = player.StreamPlatform || "Streaming";
+        const streamName = player.StreamName || `${player.Player}'s Stream`;
+        const description = player.StreamDescription || "Watch their gameplay, squad moments and community highlights.";
+
+        return `
+          <div class="col-12 col-md-6 col-xl-4">
+            <div class="streamer-card p-3 h-100 d-flex flex-column">
+              <div class="d-flex align-items-center gap-3 mb-3">
+                ${avatarHTML(player)}
+                <div class="min-w-0">
+                  <div class="fw-bold player-name">${escapeHTML(player.Player)}</div>
+                  <div class="small text-muted-ft">${platformHTML(player.Platform)}</div>
+                </div>
+              </div>
+              <span class="streamer-platform align-self-start mb-3"><i class="bi bi-camera-video-fill"></i>${escapeHTML(platform)}</span>
+              <h3 class="h5 fw-bold mb-2">${escapeHTML(streamName)}</h3>
+              <p class="small text-soft flex-grow-1">${formatSheetText(description)}</p>
+              <a class="btn btn-light rounded-pill px-3 mt-auto" href="${escapeHTML(url)}" target="_blank" rel="noopener noreferrer">
+                <i class="bi bi-box-arrow-up-right me-1"></i>Watch Stream
+              </a>
+            </div>
+          </div>
+        `;
+      }).join("");
     }
 
     const EVENT_DAY_NAMES = {
@@ -1791,15 +1974,19 @@
               </div>
               <i class="bi ${event.Icon} section-icon fs-3"></i>
             </div>
-            <p class="small text-soft mb-0">${escapeHTML(event.Description).replace(/&lt;br\s*\/?&gt;/gi, "<br>")}</p>
+            <p class="small text-soft mb-0">${formatSheetText(event.Description)}</p>
           </div>
         </div>
       `).join("") : `<div class="col-12"><div class="text-soft">No active events.</div></div>`;
     }
 
+    function formatSheetText(value) {
+  return escapeHTML(value).replace(/&lt;br\s*\/?&gt;/gi, "<br>");
+}
+
     function setErrorState(message = "Unable to load data. Please refresh the page and try again.") {
       const error = `<div class="alert alert-danger mb-0"><i class="bi bi-exclamation-triangle-fill me-2"></i>${escapeHTML(message)}</div>`;
-      ["mainLeaderboard", "platformChampions", "platformBattle", "risingStars", "topCards", "crownLeaderboard", "milestonesList", "badgesList", "eventsList"].forEach(id => {
+      ["mainLeaderboard", "platformChampions", "platformBattle", "risingStars", "topCards", "crownLeaderboard", "milestonesList", "badgesList", "streamersList", "eventsList"].forEach(id => {
         const element = document.getElementById(id);
         if (element) element.innerHTML = error;
       });
@@ -1817,6 +2004,7 @@
       renderCrownLeaderboard(enriched);
       renderMilestones(enriched);
       renderBadges(enriched);
+      renderStreamers(enriched);
       renderEvents(events);
 
       const lastUpdated = players.find(player => player.LastUpdated)?.LastUpdated || "Not Available";
@@ -1846,9 +2034,9 @@
     }
 
     function updateNavigation() {
-  const ids = ["platforms", "rising", "rankings", "milestones", "badges", "events", "crowns", "join"];
+  const ids = ["platforms", "rising", "rankings", "milestones", "badges", "streamers", "events", "crowns", "join"];
   const sections = ids.map(id => document.getElementById(id)).filter(Boolean);
-  const links = [...document.querySelectorAll("#pageNav a, #mobilePageNav a")];
+  const links = [...document.querySelectorAll("#pageNav a, #mobilePageNav a, #mobileMoreLinks a")];
 
   let current = sections[0]?.id || "";
   const offsetLine = window.innerWidth < 992 ? 120 : window.innerHeight * 0.35;
