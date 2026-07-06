@@ -1524,7 +1524,7 @@
     function renderStreamers(players) {
       const container = document.getElementById("streamersList");
       const streamers = players
-        .filter(player => player.StreamerActive && safeExternalURL(player.StreamURL))
+        .filter(player => player.StreamerActive)
         .sort((a, b) => b.Wins - a.Wins || b.CrownWins - a.CrownWins);
 
       if (!streamers.length) {
