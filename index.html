@@ -1,4 +1,4 @@
-<!doctype html> 
+<!doctype html>
 <html lang="en">
 <head>
   <meta charset="utf-8">
@@ -1656,7 +1656,14 @@
     function renderStreamers(players) {
       const container = document.getElementById("streamersList");
       const streamers = players
-        .filter(player => player.StreamerActive && safeExternalURL(player.StreamURL))
+        .filter(player => {
+    const urls = (player.StreamURL || "")
+        .split(",")
+        .map(u => safeExternalURL(u.trim()))
+        .filter(Boolean);
+
+    return player.StreamerActive && urls.length;
+})
         .sort((a, b) => b.Wins - a.Wins || b.CrownWins - a.CrownWins);
 
       if (!streamers.length) {
@@ -1665,8 +1672,15 @@
       }
 
       container.innerHTML = streamers.map(player => {
-        const url = safeExternalURL(player.StreamURL);
-        const platform = player.StreamPlatform || "Streaming";
+        const platforms = (player.StreamPlatform || "Streaming")
+    .split(",")
+    .map(p => p.trim())
+    .filter(Boolean);
+
+const urls = (player.StreamURL || "")
+    .split(",")
+    .map(u => safeExternalURL(u.trim()))
+    .filter(Boolean);
         const streamName = player.StreamName || `${player.Player}'s Stream`;
         const description = player.StreamDescription || "Watch their gameplay, squad moments and community highlights.";
 
@@ -1680,12 +1694,31 @@
                   <div class="small text-muted-ft">${platformHTML(player.Platform)}</div>
                 </div>
               </div>
-              <span class="streamer-platform align-self-start mb-3"><i class="bi bi-camera-video-fill"></i>${escapeHTML(platform)}</span>
+              <div class="d-flex flex-wrap gap-2 mb-3">
+    ${platforms.map(platform => `
+        <span class="streamer-platform">
+            <i class="bi bi-camera-video-fill"></i>
+            ${escapeHTML(platform)}
+        </span>
+    `).join("")}
+</div>
               <h3 class="h5 fw-bold mb-2">${escapeHTML(streamName)}</h3>
               <p class="small text-soft flex-grow-1">${formatSheetText(description)}</p>
-              <a class="btn btn-light rounded-pill px-3 mt-auto" href="${escapeHTML(url)}" target="_blank" rel="noopener noreferrer">
-                <i class="bi bi-box-arrow-up-right me-1"></i>Watch Stream
-              </a>
+              <div class="d-flex flex-wrap gap-2 mt-auto">
+    ${platforms.map((platform, i) => {
+        const url = urls[i];
+        if (!url) return "";
+
+        return `
+            <a class="btn btn-light rounded-pill px-3"
+               href="${escapeHTML(url)}"
+               target="_blank"
+               rel="noopener noreferrer">
+                <i class="bi bi-box-arrow-up-right me-1"></i>${escapeHTML(platform)}
+            </a>
+        `;
+    }).join("")}
+</div>
             </div>
           </div>
         `;
