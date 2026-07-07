@@ -1682,7 +1682,7 @@ const urls = (player.StreamURL || "")
     .map(u => safeExternalURL(u.trim()))
     .filter(Boolean);
         const streamName = player.StreamName || `${player.Player}'s Channels`;
-        const description = player.StreamDescription || "Watch their gameplay and best moments.";
+        const description = player.StreamDescription || "Watch their gameplay and best moments here:";
 
         return `
           <div class="col-12 col-md-6 col-xl-4">
