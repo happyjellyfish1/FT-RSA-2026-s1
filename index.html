@@ -744,8 +744,8 @@
                     <div class="fw-bold mb-2"><i class="bi bi-info-circle-fill section-icon me-2"></i>How the Master Rank Works</div>
                     <p class="small text-soft mb-2">Players are ranked by weighted leaderboard positions. Wins and Crown Wins carry the strongest weight.</p>
                     <div class="d-flex flex-wrap gap-2">
-                      <span class="token"><i class="bi bi-trophy-fill section-icon"></i>Wins 35%</span>
-                      <span class="token"><i class="bi bi-gem section-icon"></i>Crowns 35%</span>
+                      <span class="token"><i class="bi bi-trophy-fill section-icon"></i>Wins 25%</span>
+                      <span class="token"><i class="bi bi-gem section-icon"></i>Crowns 45%</span>
                       <span class="token"><i class="bi bi-crosshair section-icon"></i>Avg Elims 20%</span>
                       <span class="token"><i class="bi bi-bullseye section-icon"></i>Top 10% 10%</span>
                     </div>
@@ -816,11 +816,9 @@
             <div class="d-flex align-items-center justify-content-between gap-3 flex-wrap mb-3">
               <div>
                 <div class="small text-soft text-uppercase letter-space fw-bold mb-1">Player Progress</div>
-                <h2 class="h3 fw-bold mb-0">Badge Collection</h2>
+                <h2 class="h3 fw-bold mb-0">Badge Collection (future updates coming to this section)</h2>
               </div>
-              <span class="token"><i class="bi bi-patch-check-fill section-icon"></i>Highest badge per path only</span>
             </div>
-            <p class="small text-muted-ft mb-3">Each player card now shows only their earned badges once. No duplicate dropdown collections.</p>
             <div class="row g-3" id="badgesList"></div>
           </article>
         </section>
@@ -1126,7 +1124,7 @@
           top25: top25Rank.get(player.Player) || players.length
         };
 
-        const masterScore = (ranks.wins * 35) + (ranks.crowns * 35) + (ranks.avg * 20) + (ranks.top10 * 10);
+        const masterScore = (ranks.wins * 25) + (ranks.crowns * 45) + (ranks.avg * 20) + (ranks.top10 * 10);
         const weeklyGain = player.HasPreviousWins ? Math.max(0, player.Wins - player.PreviousWins) : 0;
         const momentumScore = weeklyGain;
 
@@ -1255,7 +1253,7 @@
                 ${avatarHTML(player)}
                 <div>
                   <div class="fw-bold player-name">${escapeHTML(player.Player)}</div>
-                  <div class="small ${index === 0 ? "section-icon" : "text-muted-ft"}">${index === 0 ? "Overall Champion" : "Lower score is better"}</div>
+                  <div class="small ${index === 0 ? "section-icon" : "text-muted-ft"}">${index === 0 ? "Overall Champion"}</div>
                 </div>
               </div>
             </td>
